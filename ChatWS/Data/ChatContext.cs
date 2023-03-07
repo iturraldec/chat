@@ -14,16 +14,16 @@ public partial class ChatContext : DbContext
     {
     }
 
-    public virtual DbSet<CState> CStates { get; set; }
+    public virtual DbSet<CStateModel> CStates { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<UserModel> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Server=localhost,1433;Database=chat;User=sa;Password=J1z01234_;Encrypt=false;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CState>(entity =>
+        modelBuilder.Entity<CStateModel>(entity =>
         {
             entity.HasKey(e => e.StateId).HasName("cState_PK");
 
@@ -36,7 +36,7 @@ public partial class ChatContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<UserModel>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("User_PK");
 
@@ -47,7 +47,7 @@ public partial class ChatContext : DbContext
             entity.Property(e => e.DateCreated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
-                .HasColumnName("Date_Created");
+                .HasColumnName("DateCreated");
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -57,7 +57,7 @@ public partial class ChatContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.StateId).HasDefaultValueSql("((4))");
+            entity.Property(e => e.StateId).HasDefaultValueSql("((1))");
 
             entity.HasOne(d => d.State).WithMany(p => p.Users)
                 .HasForeignKey(d => d.StateId)

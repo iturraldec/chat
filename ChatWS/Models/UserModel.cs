@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace ChatWS.Models;
 
-namespace ChatWS.Models;
-
-public partial class User
+public partial class UserModel
 {
     public int UserId { get; set; }
 
@@ -17,5 +14,5 @@ public partial class User
 
     public string Name { get; set; } = null!;
 
-    public virtual CState State { get; set; } = null!;
+    public virtual CStateModel State { get; set; } = null!;
 }
