@@ -1,5 +1,5 @@
-﻿using ChatWS.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ChatWS.Models;
 
 namespace ChatWS.Data;
 
@@ -14,53 +14,34 @@ public partial class ChatContext : DbContext
     {
     }
 
-    public virtual DbSet<CStateModel> CStates { get; set; }
+    public virtual DbSet<CState> CStates { get; set; }
 
-    public virtual DbSet<UserModel> Users { get; set; }
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=localhost,1433;Database=chat;User=sa;Password=J1z01234_;Encrypt=false;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost,1433; Database=chat; User=sa; Password=J1z01234_; Encrypt=False;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CStateModel>(entity =>
+        modelBuilder.Entity<CState>(entity =>
         {
             entity.HasKey(e => e.StateId).HasName("cState_PK");
 
-            entity.ToTable("cState");
-
-            entity.HasIndex(e => e.Name, "cState_UN").IsUnique();
-
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+            entity.Property(e => e.Name).UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
         });
 
-        modelBuilder.Entity<UserModel>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("User_PK");
 
-            entity.ToTable("User");
-
-            entity.HasIndex(e => e.Email, "User_UN").IsUnique();
-
-            entity.Property(e => e.DateCreated)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("DateCreated");
-            entity.Property(e => e.Email)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Password)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Email).UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
+            entity.Property(e => e.Name).UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
+            entity.Property(e => e.Password).UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
             entity.Property(e => e.StateId).HasDefaultValueSql("((1))");
 
             entity.HasOne(d => d.State).WithMany(p => p.Users)
-                .HasForeignKey(d => d.StateId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("User_FK");
         });

@@ -1,8 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using ChatWS.Data;
 using ChatWS.Dto;
-using Microsoft.AspNetCore.Mvc;
-using ChatWS.Models;
-using ChatWS.Models.Request;
 
 namespace ChatWS.Controllers;
 
@@ -22,10 +20,10 @@ public class UserController : ControllerBase
     }
     return oReply;
   }
-
+  
   [HttpPost]
   [Route("api/user/register")]
-  public Reply Register([FromBody] User model)
+  public Reply Register([FromBody] ChatWS.Models.Request.User userRequest)
   {
     Reply oReply = new Reply();
     
@@ -33,10 +31,10 @@ public class UserController : ControllerBase
     {
       using (ChatContext context = new ChatContext())
       {
-        UserModel oUser = new UserModel();
-        oUser.Email = model.Email;
-        oUser.Name = model.Name;
-        oUser.Password = model.Password;
+        ChatWS.Models.User oUser = new ChatWS.Models.User();
+        oUser.Email = userRequest.Email;
+        oUser.Name = userRequest.Name;
+        oUser.Password = userRequest.Password;
 
         context.Users.Add(oUser);
         context.SaveChanges();

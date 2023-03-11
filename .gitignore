@@ -1,7 +1,6 @@
+.vscode
 ChatReact/node_modules
-ChatWeb/.vscode/
 ChatWeb/bin
 ChatWeb/obj
-ChatWS/.vscode
 ChatWS/bin
 ChatWS/obj

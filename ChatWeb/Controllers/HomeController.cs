@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ChatWeb.Models;
+using ChatWeb.Models.Request;
 
 namespace ChatWeb.Controllers;
 
@@ -13,8 +14,17 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
-    {
+    public async Task<IActionResult> Index()
+    {  
+        User oUser = new User();
+
+        oUser.Name = "catalina";
+        oUser.Email = "catalina@gmail.com";
+        oUser.Password = "1234";
+
+        Utils.RequestUtil oRequestUtil = new Utils.RequestUtil();
+        Dto.Reply oReply = await oRequestUtil.Execute<User>("http://localhost:5136/api/user/register", "POST", oUser);
+        
         return View();
     }
 

@@ -1,4 +1,4 @@
-namespace ChatWS.Models.Request;
+namespace ChatWeb.Models.Request;
 
 public class User
 {
