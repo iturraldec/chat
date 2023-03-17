@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ChatWS.Data;
-using ChatWS.Dto;
+using UtilitiesChat.Models.WS;
 
 namespace ChatWS.Controllers;
 
@@ -9,7 +9,7 @@ public class UserController : ControllerBase
 {
   [HttpGet]
   [Route("api/user/list")]
-  public Reply List()
+  public Reply Get()
   {
     Reply oReply = new Reply();
     using (ChatContext context = new ChatContext())

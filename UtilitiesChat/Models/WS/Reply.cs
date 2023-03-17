@@ -1,4 +1,4 @@
-namespace ChatWS.Dto;
+namespace UtilitiesChat.Models.WS;
 
 public class Reply
 {

@@ -1,14 +1,13 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using ChatWeb.Models;
-using ChatWeb.Models.Request;
+using Microsoft.AspNetCore.Mvc;
+using ChatWeb.Business;
 
 namespace ChatWeb.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
     public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
@@ -16,15 +15,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {  
-        User oUser = new User();
 
-        oUser.Name = "catalina";
-        oUser.Email = "catalina@gmail.com";
-        oUser.Password = "1234";
+        UtilitiesChat.Tools.RequestUtil oRequestUtil = new UtilitiesChat.Tools.RequestUtil();
+        UtilitiesChat.Models.WS.Reply oReply = await oRequestUtil.Get(Constants.LIST);
 
-        Utils.RequestUtil oRequestUtil = new Utils.RequestUtil();
-        Dto.Reply oReply = await oRequestUtil.Execute<User>("http://localhost:5136/api/user/register", "POST", oUser);
-        
+        Debug.Write(oReply);
         return View();
     }
 
