@@ -14,28 +14,11 @@ public class RequestUtil
     oReply = new Reply();
   }
 
-  public async Task<Reply> Get(string url)
+  /*public async Task<Reply> Get(string url)
   {
     try 
     {
-      oReply = JsonSerializer.Deserialize<Reply>(await _client.GetStringAsync(url));
-    }
-    catch (Exception e) 
-    {
-      oReply.result = 0;
-      oReply.message = "Error: Ocurrio un error inesperado.";
-    }
-    return oReply;
-  }
-
-  /*public async Task<Reply> Execute<T>(string url, string method, T objectRequest)
-  {
-    try 
-    {
-      var data = JsonSerializer.Serialize<T>(objectRequest);
-      HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-      //oReply.data = await _client.PostAsync(url, content);
-      oReply.result = 1;
+      oReply = await JsonSerializer.DeserializeAsync<Reply>(_client.GetStringAsync(url));
     }
     catch (Exception e) 
     {
@@ -44,4 +27,27 @@ public class RequestUtil
     }
     return oReply;
   }*/
+
+  public Reply Execute<T>(string url, string method, T objectRequest)
+  {
+    try 
+    {
+      switch(method)
+      {
+        case "post":
+          var data = JsonSerializer.Serialize<T>(objectRequest);
+          HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+
+          oReply.data = _client.PostAsync(url, content);
+          oReply.result = 1;
+          break;
+      }
+    }
+    catch (Exception e) 
+    {
+      oReply.result = 0;
+      oReply.message = "Error: Ocurrio un error inesperado.";
+    }
+    return oReply;
+  }
 }

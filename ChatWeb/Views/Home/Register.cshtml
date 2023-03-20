@@ -1,0 +1,21 @@
+@model ChatWeb.Models.ViewModels.RegisterViewModel;
+@{
+    ViewData["Title"] = "Registro";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+    
+<h2>@ViewBag.Title</h2>
+<form action="~/Home/Register" method="post">
+    <div class="row">
+        <div class="col">
+            @Html.LabelFor(d => d.Name)
+            @Html.TextBoxFor(d => d.Name, "", new { @class="form-control" })
+            @Html.LabelFor(d => d.Name)
+            @Html.TextBoxFor(d => d.Email, "", new { @class="form-control" })
+            @Html.LabelFor(d => d.Password)
+            @Html.PasswordFor(d => d.Password, new { @class="form-control" })
+
+            <input type="submit" value="Guardar">
+        </div>
+    </div>
+</form>

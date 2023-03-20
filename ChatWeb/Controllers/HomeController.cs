@@ -1,36 +1,40 @@
-﻿using System.Diagnostics;
-using ChatWeb.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ChatWeb.Business;
+using UtilitiesChat.Tools;
 
 namespace ChatWeb.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
+  private readonly ILogger<HomeController> _logger;
+  public HomeController(ILogger<HomeController> logger)
+  {
+    _logger = logger;
+  }
 
-    public async Task<IActionResult> Index()
-    {  
+  public ActionResult Index()
+  {
+    return View();
+  }
 
-        UtilitiesChat.Tools.RequestUtil oRequestUtil = new UtilitiesChat.Tools.RequestUtil();
-        UtilitiesChat.Models.WS.Reply oReply = await oRequestUtil.Get(Constants.LIST);
+  [HttpGet]
+  public ActionResult Register()
+  {
+    ChatWeb.Models.ViewModels.RegisterViewModel model = new ChatWeb.Models.ViewModels.RegisterViewModel();
+    return View(model);
+  }
 
-        Debug.Write(oReply);
-        return View();
-    }
+  [HttpPost]
+  public ActionResult Register(ChatWeb.Models.ViewModels.RegisterViewModel model)
+  {
+    Models.Request.User oUser = new Models.Request.User();
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    oUser.Name = model.Name;
+    oUser.Email = model.Email;
+    oUser.Password = model.Password;
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+    RequestUtil oRequestUtil = new RequestUtil();
+    UtilitiesChat.Models.WS.Reply oReply = oRequestUtil.Execute<Models.Request.User>(Constants.REGISTER, "post", oUser);
+    return View();
+  }
 }

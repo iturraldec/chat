@@ -17,4 +17,13 @@ public class Constants
     }
     
   }
+
+  public static string REGISTER
+  {
+    get
+    {
+      return URL_API + "api/user/register/";
+    }
+    
+  }
 }
