@@ -10,10 +10,19 @@
         <div class="col">
             @Html.LabelFor(d => d.Name)
             @Html.TextBoxFor(d => d.Name, "", new { @class="form-control" })
-            @Html.LabelFor(d => d.Name)
+            @Html.ValidationMessageFor(d => d.Name, "", new { @class="text-danger" })<br />
+
+            @Html.LabelFor(d => d.Email)
             @Html.TextBoxFor(d => d.Email, "", new { @class="form-control" })
+            @Html.ValidationMessageFor(d => d.Email, "", new { @class="text-danger" })<br />
+            
             @Html.LabelFor(d => d.Password)
             @Html.PasswordFor(d => d.Password, new { @class="form-control" })
+            @Html.ValidationMessageFor(d => d.Password, "", new { @class="text-danger" })<br />
+
+            @Html.LabelFor(d => d.Password2)
+            @Html.PasswordFor(d => d.Password2, new { @class="form-control" })
+            @Html.ValidationMessageFor(d => d.Password2, "", new { @class="text-danger" })<br />
 
             <input type="submit" value="Guardar">
         </div>

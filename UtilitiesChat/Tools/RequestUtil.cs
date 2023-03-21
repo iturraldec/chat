@@ -6,12 +6,11 @@ namespace UtilitiesChat.Tools;
 public class RequestUtil
 {
   private static HttpClient _client  = new HttpClient();
-  public Reply oReply {get; set;}
+  public Reply? oReply {get; set;}
 
   public RequestUtil()
   {
     _client.Timeout = TimeSpan.FromMinutes(1);
-    oReply = new Reply();
   }
 
   /*public async Task<Reply> Get(string url)
@@ -32,8 +31,12 @@ public class RequestUtil
   {
     try 
     {
+      oReply = new Reply();
+
       switch(method)
       {
+        case "get":
+          break;
         case "post":
           var data = JsonSerializer.Serialize<T>(objectRequest);
           HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
