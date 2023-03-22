@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +14,7 @@ public partial class CState
     public int StateId { get; set; }
 
     [StringLength(50)]
-    [Unicode(true)]
+    [Unicode(false)]
     public string Name { get; set; } = null!;
 
     [InverseProperty("State")]

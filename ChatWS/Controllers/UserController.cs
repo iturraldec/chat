@@ -12,12 +12,14 @@ public class UserController : ControllerBase
   public Reply Get()
   {
     Reply oReply = new Reply();
+    
     using (ChatContext context = new ChatContext())
     {
       oReply.message = "Listado de usuarios.";
       oReply.result = 1;
       oReply.data = context.Users.ToList();
     }
+
     return oReply;
   }
   
@@ -26,7 +28,7 @@ public class UserController : ControllerBase
   public Reply Register([FromBody] ChatWS.Models.Request.User userRequest)
   {
     Reply oReply = new Reply();
-    
+
     try
     {
       using (ChatContext context = new ChatContext())
@@ -49,7 +51,7 @@ public class UserController : ControllerBase
 
       //log
     }
-
+    
     return oReply;
   }
 }
