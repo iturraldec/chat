@@ -1,0 +1,21 @@
+@model ChatWeb.Models.ViewModels.UserAccessViewModel;
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+    
+<h2>@ViewBag.Title</h2>
+<form action="~/Home/Login" method="post">
+    <div class="row">
+        <div class="col">
+            @Html.LabelFor(d => d.Email)
+            @Html.TextBoxFor(d => d.Email, "", new { @class="form-control" })
+            @Html.ValidationMessageFor(d => d.Email, "", new { @class="text-danger" })<br />
+            
+            @Html.LabelFor(d => d.Password)
+            @Html.PasswordFor(d => d.Password, new { @class="form-control" })
+            @Html.ValidationMessageFor(d => d.Password, "", new { @class="text-danger" })<br />
+            <input type="submit" value="Guardar">
+        </div>
+    </div>
+</form>

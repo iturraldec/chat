@@ -9,7 +9,7 @@ namespace ChatWS.Controllers;
 public class AccessController : ControllerBase
 {
   [HttpPost]
-  [Route("api/user/login")]
+  [Route("api/access")]
   public Reply Login([FromBody] AccessRequest model)
   {
     Reply oReply = new Reply();
@@ -24,13 +24,18 @@ public class AccessController : ControllerBase
         
         if(oUser != null)
         {
+            UserResponse oUserResponse = new UserResponse();
             string accessToken = Guid.NewGuid().ToString();
 
             oUser.AccessToken = accessToken;
             db.Entry(oUser).State = EntityState.Modified;
             db.SaveChanges();
+
+            oUserResponse.Name = oUser.Name;
+            oUserResponse.AccessToken = accessToken;
+
             oReply.result = 1;
-            oReply.data = accessToken;
+            oReply.data = oUserResponse;
         }
         else
         {

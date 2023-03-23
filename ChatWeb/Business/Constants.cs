@@ -26,4 +26,13 @@ public class Constants
     }
     
   }
+
+  public static string ACCESS
+  {
+    get
+    {
+      return URL_API + "api/access/";
+    }
+    
+  }
 }
