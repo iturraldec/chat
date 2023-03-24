@@ -1,7 +1,22 @@
+using ChatWeb.Filters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<CheckSession>();
+});
+
+// sesiones
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+});
+// fin de sesiones
 
 var app = builder.Build();
 
@@ -19,6 +34,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// sesiones
+app.UseSession();
+// fin de sesiones
 
 app.MapControllerRoute(
     name: "default",

@@ -26,35 +26,29 @@ public class RequestUtil
     return oReply;
   }*/
 
-  public Reply Execute<T>(string url, string method, T objectRequest)
+  public async Task<Reply> Execute<T>(string url, string method, T objectRequest)
   {
     oReply.result = 0;
-    string result = "";
 
     try 
     {
-      string js = JsonSerializer.Serialize(objectRequest);
-      WebRequest request =  WebRequest.Create(url);
+      var client = new HttpClient();
 
-      request.Method = method;
-      request.PreAuthenticate = true;
-      request.ContentType = "application/json;charset=utf-8";
-      request.Timeout = 1000;
-
-      using (var oStreamWriter = new StreamWriter(request.GetRequestStream()))
+      client.Timeout = TimeSpan.FromMinutes(1);
+      switch(method)
       {
-        oStreamWriter.Write(js);
-        oStreamWriter.Flush();
+        case "post":
+          var data = JsonSerializer.Serialize<T>(objectRequest);
+          HttpContent content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+          var response = await client.PostAsync(url, content);
+
+          if(response.IsSuccessStatusCode)
+          {
+              var result = await response.Content.ReadAsStreamAsync();
+              oReply = JsonSerializer.Deserialize<Reply>(result);
+          }
+          break;
       }
-
-      var response = (HttpWebResponse)request.GetResponse();
-
-      using(var oStreamWReader = new StreamReader(response.GetResponseStream()))
-      {
-        result = oStreamWReader.ReadToEnd();
-      }
-
-      oReply = JsonSerializer.Deserialize<Reply>(result);
     }
     catch(TimeoutException e)
     {

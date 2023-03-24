@@ -28,7 +28,7 @@ public class HomeController : Controller
   }
 
   [HttpPost]
-  public ActionResult Login(UserAccessViewModel model)
+  public async Task<ActionResult> Login(UserAccessViewModel model)
   {
     if(!ModelState.IsValid)
     {
@@ -40,7 +40,11 @@ public class HomeController : Controller
 
     oAR.Email = model.Email;
     oAR.Password = UtilitiesChat.Tools.Encrypt.GetSha256(model.Password);
-    UtilitiesChat.Models.WS.Reply oReply = oRequestUtil.Execute<AccessRequest>(Constants.ACCESS, "post", oAR);
+    UtilitiesChat.Models.WS.Reply oReply = await oRequestUtil.Execute<AccessRequest>(Constants.ACCESS, "post", oAR);
+    if(oReply.result == 1)
+    {
+      HttpContext.Session.SetString("User", "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5");
+    }
     
     return View();
   }
@@ -67,7 +71,7 @@ public class HomeController : Controller
     oUser.Password = model.Password;
 
     RequestUtil oRequestUtil = new RequestUtil();
-    UtilitiesChat.Models.WS.Reply oReply = oRequestUtil.Execute<Models.Request.User>(Constants.REGISTER, "post", oUser);
+    //UtilitiesChat.Models.WS.Reply oReply = oRequestUtil.Execute<Models.Request.User>(Constants.REGISTER, "post", oUser);
 
     return View();
   }
