@@ -3,6 +3,7 @@ using ChatWeb.Business;
 using UtilitiesChat.Tools;
 using ChatWeb.Models.ViewModels;
 using UtilitiesChat.Models.WS;
+using System.Text.Json;
 
 namespace ChatWeb.Controllers;
 
@@ -12,11 +13,6 @@ public class HomeController : Controller
   public HomeController(ILogger<HomeController> logger)
   {
     _logger = logger;
-  }
-
-  public ActionResult Index()
-  {
-    return View();
   }
 
   [HttpGet]
@@ -43,9 +39,11 @@ public class HomeController : Controller
     UtilitiesChat.Models.WS.Reply oReply = await oRequestUtil.Execute<AccessRequest>(Constants.ACCESS, "post", oAR);
     if(oReply.result == 1)
     {
-      HttpContext.Session.SetString("User", "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5");
+      HttpContext.Session.SetString("User", JsonSerializer.Serialize(oReply.data));
+      return RedirectToAction("Index", "Lobby");
     }
     
+    ViewBag.error = "Datos incorrectos!";
     return View();
   }
 

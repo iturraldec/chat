@@ -45,5 +45,22 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
+    <script src="@ChatWeb.Business.Constants.SignalR"></script>
+
+    <script>
+        $(function() {
+            $.support.cors = true;
+            $.connection.hub.url = "@ChatWeb.Business.Constants.SignalRHub";
+            var Counter = $.connection.counterHub;
+
+            Counter.client.enterUser = function() {
+                alert("entro un chamo");
+            }
+
+            $.connection.hub.start.done();
+        })
+    </script>
 </body>
 </html>

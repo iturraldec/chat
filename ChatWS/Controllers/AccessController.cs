@@ -31,8 +31,8 @@ public class AccessController : ControllerBase
             db.Entry(oUser).State = EntityState.Modified;
             db.SaveChanges();
 
-            oUserResponse.Name = oUser.Name;
-            oUserResponse.AccessToken = accessToken;
+            oUserResponse.name = oUser.Name;
+            oUserResponse.accessToken = accessToken;
 
             oReply.result = 1;
             oReply.data = oUserResponse;

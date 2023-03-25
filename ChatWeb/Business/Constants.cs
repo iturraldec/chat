@@ -33,6 +33,21 @@ public class Constants
     {
       return URL_API + "api/access/";
     }
-    
+  }
+
+  public static string SignalR
+  {
+    get
+    {
+      return URL_API + "signalr/";
+    }
+  }
+
+  public static string SignalRHub
+  {
+    get
+    {
+      return URL_API + "signalr/hubs/";
+    }
   }
 }

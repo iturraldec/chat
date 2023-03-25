@@ -2,10 +2,13 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    string error = (string)ViewBag.error;
 }
     
 <h2>@ViewBag.Title</h2>
 <form action="~/Home/Login" method="post">
+    <div class="text-danger">@error</div>
+
     <div class="row">
         <div class="col">
             @Html.LabelFor(d => d.Email)
