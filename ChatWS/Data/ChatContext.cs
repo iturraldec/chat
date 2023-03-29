@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ChatWS.Models;
+﻿using ChatWS.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatWS.Data;
