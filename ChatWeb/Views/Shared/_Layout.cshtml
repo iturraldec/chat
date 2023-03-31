@@ -46,21 +46,24 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    <script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
-    <script src="@ChatWeb.Business.Constants.SignalR"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
 
     <script>
-        $(function() {
-            $.support.cors = true;
-            $.connection.hub.url = "@ChatWeb.Business.Constants.SignalRHub";
-            var Counter = $.connection.counterHub;
+        try {
+            var connection = new signalR.HubConnectionBuilder().withUrl("@ChatWeb.Business.Constants.SignalR").build();
 
-            Counter.client.enterUser = function() {
-                alert("entro un chamo");
-            }
+            connection.on("EnterUser", function () {
+                alert("bienvenido...");
+            });
 
-            $.connection.hub.start.done();
-        })
+            connection.start().then(function () {
+                console.log("SignalR...ok");
+                connection.invoke("Send");
+            });
+        }
+        catch(error) {
+            console.error(error);
+        }
     </script>
 </body>
 </html>

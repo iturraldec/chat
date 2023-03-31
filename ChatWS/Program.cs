@@ -1,6 +1,5 @@
 using ChatWS.Data;
-using Microsoft.AspNet.SignalR;
-using Microsoft.Owin.Cors;
+using ChatWS.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +9,20 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ChatContext>();
 
+//////////// SignalR ////////////////////////////////
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.SetIsOriginAllowed(hostname => true)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+    });
+});
+
 builder.Services.AddSignalR();
+//////////////////////////////////////////////////
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,6 +43,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatWS.Hubs.ChatHub>("/signalr");
+//////////// SignalR ///////////////////////////////
+app.UseCors();
+
+app.MapHub<CounterHub>("/signalr");
+//////////////////////////////////////////////////
 
 app.Run();

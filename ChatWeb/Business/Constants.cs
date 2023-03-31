@@ -42,12 +42,4 @@ public class Constants
       return URL_API + "signalr/";
     }
   }
-
-  public static string SignalRHub
-  {
-    get
-    {
-      return URL_API + "signalr/hubs/";
-    }
-  }
 }
