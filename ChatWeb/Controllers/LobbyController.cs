@@ -4,10 +4,8 @@ namespace ChatWeb.Controllers;
 
 public class LobbyController : Controller
 {
-  private readonly ILogger<HomeController> _logger;
-  public LobbyController(ILogger<HomeController> logger)
+  public LobbyController()
   {
-    _logger = logger;
   }
 
   public ActionResult Index()

@@ -30,6 +30,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -41,6 +42,12 @@
             &copy; 2023 - ChatWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <audio style="display:none;" id="AudioWelcome" controls>
+        <source src="~/Media/EnterUser.mp3" type="audio/mpeg">
+        Your browser does not support the <code>audio</code> element.
+    </audio>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -49,21 +56,18 @@
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
 
     <script>
-        try {
+        $(function () {
             var connection = new signalR.HubConnectionBuilder().withUrl("@ChatWeb.Business.Constants.SignalR").build();
 
             connection.on("EnterUser", function () {
-                alert("bienvenido...");
+                document.getElementById("AudioWelcome").play();
             });
 
             connection.start().then(function () {
                 console.log("SignalR...ok");
                 connection.invoke("Send");
             });
-        }
-        catch(error) {
-            console.error(error);
-        }
+        });
     </script>
 </body>
 </html>
