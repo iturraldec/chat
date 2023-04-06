@@ -21,7 +21,6 @@ public class CheckSession : ActionFilterAttribute
     catch (Exception e)
     {
 
-    }
-      
+    }      
   }
 }

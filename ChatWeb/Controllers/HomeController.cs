@@ -42,7 +42,7 @@ public class HomeController : Controller
     }
     
     ViewBag.error = "Datos incorrectos!";
-    return View();
+    return View(model);
   }
 
   [HttpGet]

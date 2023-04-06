@@ -11,10 +11,20 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 // sesiones
-builder.Services.AddDistributedMemoryCache();
+builder.Services.AddControllersWithViews();
+
+//sesiones
+builder.Services.AddSession();
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.IdleTimeout = TimeSpan.FromMinutes(5); // Establecer el tiempo de espera de inactividad en 5 minutos
 });
 // fin de sesiones
 
@@ -29,15 +39,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
-
 // sesiones
 app.UseSession();
 // fin de sesiones
+
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

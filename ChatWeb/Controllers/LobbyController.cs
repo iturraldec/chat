@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UtilitiesChat.Models.WS;
 
 namespace ChatWeb.Controllers;
 
-public class LobbyController : Controller
+public class LobbyController : BaseController
 {
   public LobbyController()
   {
@@ -10,6 +11,9 @@ public class LobbyController : Controller
 
   public ActionResult Index()
   {
-    return View();
+    List<ListRoomsResponse> lst = new List<ListRoomsResponse>();
+
+    ViewBag.misesion = oUserSession.accessToken;
+    return View(lst);
   }
 }

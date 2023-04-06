@@ -16,6 +16,8 @@ public partial class ChatContext : DbContext
 
     public virtual DbSet<CState> CStates { get; set; }
 
+    public virtual DbSet<Room> Rooms { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,6 +31,17 @@ public partial class ChatContext : DbContext
             entity.HasKey(e => e.StateId).HasName("cState_PK");
 
             entity.Property(e => e.Name).UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
+        });
+
+        modelBuilder.Entity<Room>(entity =>
+        {
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.IdState).HasDefaultValueSql("((1))");
+
+            entity.HasOne(d => d.IdStateNavigation).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Room_FK");
         });
 
         modelBuilder.Entity<User>(entity =>
