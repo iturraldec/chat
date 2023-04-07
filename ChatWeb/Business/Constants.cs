@@ -35,6 +35,14 @@ public class Constants
     }
   }
 
+  public static string ROOMS
+  {
+    get
+    {
+      return URL_API + "api/room/";
+    }
+  }
+
   public static string SignalR
   {
     get

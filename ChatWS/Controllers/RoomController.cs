@@ -24,9 +24,9 @@ public class RoomController : BaseController
                                                 where d.IdState == 1
                                                 orderby d.Name
                                                 select new ListRoomsResponse {
-                                                  Id = d.Id,
-                                                  Name = d.Name,
-                                                  Description = d.Description
+                                                  id = d.Id,
+                                                  name = d.Name,
+                                                  description = d.Description
                                                 }).ToList();
       oR.result = 1;
       oR.data = listRoomsResponse;

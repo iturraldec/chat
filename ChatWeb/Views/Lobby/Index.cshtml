@@ -4,7 +4,6 @@
     ViewData["Title"] = "Lobby Page";
 }
 
-<h2>@ViewBag.misesion</h2>
 <h2>@ViewBag.Title</h2>
 
 <div class="row">
@@ -12,10 +11,10 @@
         @foreach (var item in Model)
         {
             <div>
-                @item.Name<br />
-                @item.Description<br />
+                @item.name<br />
+                @item.description<br />
                 <div style="text-align:center;">
-                    <button onclick="jsGo(@item.Id);">Ir a la sala</button>
+                    <button onclick="jsGo(@item.id);">Ir a la sala</button>
                 </div>
             </div>
         }
