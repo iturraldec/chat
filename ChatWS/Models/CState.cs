@@ -15,6 +15,9 @@ public partial class CState
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
+    [InverseProperty("IdStateNavigation")]
+    public virtual ICollection<Room> Rooms { get; } = new List<Room>();
+
     [InverseProperty("State")]
     public virtual ICollection<User> Users { get; } = new List<User>();
 }

@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChatWS.Models;
 
-[Keyless]
 [Table("Room")]
 public partial class Room
 {
+    [Key]
     public int Id { get; set; }
 
     [StringLength(50)]
@@ -24,5 +24,6 @@ public partial class Room
     public int IdState { get; set; }
 
     [ForeignKey("IdState")]
+    [InverseProperty("Rooms")]
     public virtual CState IdStateNavigation { get; set; } = null!;
 }

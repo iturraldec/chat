@@ -16,6 +16,7 @@ public class BaseController : ControllerBase
       {
         oUserSession = new UserResponse();
 
+        oUserSession.id = oUser.UserId;
         oUserSession.accessToken = oUser.AccessToken;
         oUserSession.name = oUser.Name;
         oUserSession.email = oUser.Email;

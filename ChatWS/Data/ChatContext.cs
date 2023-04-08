@@ -16,6 +16,8 @@ public partial class ChatContext : DbContext
 
     public virtual DbSet<CState> CStates { get; set; }
 
+    public virtual DbSet<Message> Messages { get; set; }
+
     public virtual DbSet<Room> Rooms { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -33,13 +35,32 @@ public partial class ChatContext : DbContext
             entity.Property(e => e.Name).UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
         });
 
-        modelBuilder.Entity<Room>(entity =>
+        modelBuilder.Entity<Message>(entity =>
         {
             entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.IdState).HasDefaultValueSql("((1))");
+
+            entity.HasOne(d => d.IdRoomNavigation).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Message_FK_1");
 
             entity.HasOne(d => d.IdStateNavigation).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Message_FK_2");
+
+            entity.HasOne(d => d.IdUserNavigation).WithMany()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Message_FK");
+        });
+
+        modelBuilder.Entity<Room>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Room_PK");
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IdState).HasDefaultValueSql("((1))");
+
+            entity.HasOne(d => d.IdStateNavigation).WithMany(p => p.Rooms)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Room_FK");
         });
