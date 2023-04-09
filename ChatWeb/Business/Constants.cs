@@ -43,11 +43,19 @@ public class Constants
     }
   }
 
+  public static string MESSAGES
+  {
+    get
+    {
+      return URL_API + "api/message/";
+    }
+  }
+
   public static string SignalR
   {
     get
     {
-      return URL_API + "signalr/";
+      return URL_API + "chatHub/";
     }
   }
 }

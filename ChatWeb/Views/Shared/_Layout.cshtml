@@ -53,21 +53,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-
-    <script>
-        $(function () {
-            var connection = new signalR.HubConnectionBuilder().withUrl("@ChatWeb.Business.Constants.SignalR").build();
-
-            connection.on("EnterUser", function () {
-                document.getElementById("AudioWelcome").play();
-            });
-
-            connection.start().then(function () {
-                console.log("SignalR...ok");
-                connection.invoke("Send");
-            });
-        });
-    </script>
 </body>
 </html>

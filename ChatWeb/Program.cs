@@ -10,21 +10,16 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<CheckSession>();
 });
 
-// sesiones
-builder.Services.AddControllersWithViews();
-
 //sesiones
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(5); // Establecer el tiempo de espera de inactividad en 5 minutos
+});
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
-});
-
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(5); // Establecer el tiempo de espera de inactividad en 5 minutos
 });
 // fin de sesiones
 

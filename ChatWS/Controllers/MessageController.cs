@@ -15,7 +15,7 @@ public class MessageController : BaseController
     if(!VerifyToken(model))
     {
       oReply.result = 0;
-      oReply.message = "Mètodo restringido.";
+      oReply.message = "Método restringido.";
       return oReply;
     }
 
@@ -30,12 +30,12 @@ public class MessageController : BaseController
                                       orderby d.DateCreated descending
                                       select new MessagesResponse
                                       {
-                                        Id = d.Id,
-                                        Message = d.Text,
-                                        DateCreated = d.DateCreated,
-                                        IdUser = d.IdUser,
-                                        UserName = usuario.Name,
-                                        TypeMessage = (
+                                        id = d.Id,
+                                        message = d.Text,
+                                        dateCreated = d.DateCreated,
+                                        idUser = d.IdUser,
+                                        userName = usuario.Name,
+                                        typeMessage = (
                                           new Func<int>(() => {
                                             try
                                             {

@@ -9,7 +9,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ChatContext>();
 
-//////////// SignalR ////////////////////////////////
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -21,6 +20,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+//////////// SignalR ////////////////////////////////
 builder.Services.AddSignalR();
 //////////////////////////////////////////////////
 
@@ -43,10 +43,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//////////// SignalR ///////////////////////////////
 app.UseCors();
 
-app.MapHub<CounterHub>("/signalr");
+//////////// SignalR ///////////////////////////////
+app.MapHub<ChatHub>("/chatHub");
 //////////////////////////////////////////////////
 
 app.Run();

@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChatWS.Models;
 
-[Keyless]
 [Table("Message")]
 public partial class Message
 {
+    [Key]
     public int Id { get; set; }
 
     public int IdUser { get; set; }

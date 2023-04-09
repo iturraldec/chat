@@ -1,0 +1,108 @@
+@model dynamic
+
+@{
+    ViewData["Title"] = "Messges Page";
+}
+
+<h2>Bienvenido: @Model.oUserSession.name</h2>
+<h2>Chat Room #@Model.idRoom</h2>
+
+<div class="row">
+    <div class="col-12">
+        <b>Mensajes de usuarios de la sala</b>
+        <div style="height:70vh; border:1px solid #000; border-radius:10px; overflow:auto;" id="AllMessages">
+            @foreach (var item in Model.lstMessages)
+            {
+                string classRight = (item.typeMessage == 1) ? "messageRight" : "";
+
+                <div>
+                    <div class="message @classRight">
+                        <b>@item.userName</b>
+                        <div>@item.message</div>
+                        <div style="text-align:right; font-size:11px;">
+                            @item.dateCreated.ToString()
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            }
+        </div>
+
+        <div style="height:5vh">
+            <input placeholder="Escribe un mensaje..." type="text" value="" id="txtMessage" style="width:90%;" />
+            <input id="btnSend" type="button" value="Enviar" class="btn btn-success" />
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#btnSend").prop("disabled", true);
+            var connection = new signalR.HubConnectionBuilder().withUrl("@ChatWeb.Business.Constants.SignalR").build();
+
+            connection.on("EnterUser", function () {
+                document.getElementById("AudioWelcome").play();
+            });
+
+            connection.on("ReceiveMessage", function (idUser, userName, message, fecha) {
+                var classRight = (idUser == @Model.oUserSession.id) ? "messageRight" : "";
+                var newMessage = '<div>'+
+                    "<div class='message "+classRight+"'>" +
+                        "<b>" + userName + "</b>"+
+                        "<div>" + message + "</div>"+
+                        "<div style='text-align:right; font-size:11px;'>"+
+                           fecha+
+                        "</div>"
+                    "</div>"
+                    "<div class='clearfix'></div>"
+                 "</div>";
+
+                 $("#AllMessages").append(newMessage);
+                 $("#txtMessage").prop("value", "");
+                 $("#txtMessage").focus();
+                 $('#AllMessages').scrollTop($('#AllMessages')[0].scrollHeight);
+            });
+
+            connection.start().then(function () {
+                console.log("SignalR...ok");
+                $("#btnSend").prop("disabled", false);
+                $("#btnSend").click((event) => {
+                    var idRoom = @Model.idRoom;
+                    var idUser = @Model.oUserSession.id;
+                    var userName = "@Model.oUserSession.name";
+                    var message = $("#txtMessage").prop("value");
+                    
+                    if(message == "") {
+                        alert("Debes ingresar un mensaje");
+                        return;
+                    }
+
+                    connection.invoke("SendMessage", idRoom, idUser, userName, message)
+                              .catch(function (err) {
+                                return console.error(err.toString());
+                    });
+                    event.preventDefault();
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    .message {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 50%;
+        margin: 10px;
+        padding: 5px;
+    }
+
+    .messageRight {
+        float: right;
+    }
+</style>
