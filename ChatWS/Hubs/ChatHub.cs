@@ -11,24 +11,43 @@ public class ChatHub : Hub
       Clients.All.SendAsync("EnterUser");
       return base.OnConnectedAsync();
     }
-    public async Task SendMessage(int idRoom, int idUser, string userName, string message)
+
+    public Task AddGroup(string idRoom)
     {
-      string fecha = DateTime.Now.ToString();
-
-      using(ChatContext db = new ChatContext())
-      {
-        var oMessage = new Message();
-
-        oMessage.IdRoom = idRoom;
-        oMessage.IdUser = idUser;
-        oMessage.Text = message;
-        oMessage.DateCreated = DateTime.Now;
-        oMessage.IdState = 1;
-
-        db.Messages.Add(oMessage);
-        db.SaveChanges();
-      }
-
-      await Clients.All.SendAsync("ReceiveMessage", idUser, userName, message, fecha);
+      return Groups.AddToGroupAsync(Context.ConnectionId, idRoom);
     }
+
+    public async Task SendMessage(int idRoom, int idUser, string userName, string message, string accessToken)
+    {
+      if(VerifyToken(accessToken))
+      {
+        string fecha = DateTime.Now.ToString();
+
+        using(ChatContext db = new ChatContext())
+        {
+          var oMessage = new Message();
+
+          oMessage.IdRoom = idRoom;
+          oMessage.IdUser = idUser;
+          oMessage.Text = message;
+          oMessage.DateCreated = DateTime.Now;
+          oMessage.IdState = 1;
+
+          db.Messages.Add(oMessage);
+          db.SaveChanges();
+        }
+
+        await Clients.Group(idRoom.ToString()).SendAsync("ReceiveMessage", idUser, userName, message, fecha); 
+      }
+    }
+
+  protected bool VerifyToken(string accessToken)
+  {
+    using(ChatWS.Data.ChatContext db = new ChatWS.Data.ChatContext())
+    {
+      var oUser = db.Users.Where(d => d.AccessToken == accessToken).FirstOrDefault();
+
+      return (oUser != null);
+    }
+  }
 }

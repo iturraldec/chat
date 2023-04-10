@@ -70,19 +70,20 @@
 
             connection.start().then(function () {
                 console.log("SignalR...ok");
+                connection.invoke("AddGroup", "@Model.idRoom");
                 $("#btnSend").prop("disabled", false);
                 $("#btnSend").click((event) => {
                     var idRoom = @Model.idRoom;
                     var idUser = @Model.oUserSession.id;
                     var userName = "@Model.oUserSession.name";
                     var message = $("#txtMessage").prop("value");
-                    
+
                     if(message == "") {
                         alert("Debes ingresar un mensaje");
                         return;
                     }
 
-                    connection.invoke("SendMessage", idRoom, idUser, userName, message)
+                    connection.invoke("SendMessage", idRoom, idUser, userName, message, "@Model.oUserSession.accessToken")
                               .catch(function (err) {
                                 return console.error(err.toString());
                     });
