@@ -11,20 +11,6 @@ public class RequestUtil
     oReply = new Reply();
   }
 
-  /*public async Task<Reply> Get(string url)
-  {
-    try 
-    {
-      oReply = await JsonSerializer.DeserializeAsync<Reply>(_client.GetStringAsync(url));
-    }
-    catch (Exception e) 
-    {
-      oReply.result = 0;
-      oReply.message = "Error: Ocurrio un error inesperado.";
-    }
-    return oReply;
-  }*/
-
   public async Task<Reply> Execute<T>(string url, string method, T objectRequest)
   {
     oReply.result = 0;
