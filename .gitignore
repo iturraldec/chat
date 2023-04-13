@@ -1,6 +1,6 @@
 .vscode
 ChatReact/node_modules
-ChatReac/.vscode
+ChatReact/public
 ChatWeb/bin
 ChatWeb/obj
 ChatWeb/.vscode
@@ -9,4 +9,4 @@ ChatWS/obj
 ChatWS/.vscode
 UtilitiesChat/bin
 UtilitiesChat/obj
-UtilitiesChat/.vscode
+
