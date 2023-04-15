@@ -1,4 +1,5 @@
 .vscode
+ChatReact/dist
 ChatReact/node_modules
 ChatReact/public
 ChatWeb/bin
