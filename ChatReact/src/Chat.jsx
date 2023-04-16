@@ -5,18 +5,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
+import ChatView from './ChatView';
 
 export default function Chat({ session, idRoom }) {
   const [mensajes, setMensajes] = useState(null);
 
   // cargo los mensajes
   useEffect(() => {
-    //console.log(session);
-    /*
     fetch('http://localhost:5133/api/message', {
       method: 'POST',
       body: JSON.stringify({
-        IdRoom: session.IdRoom,
+        AccessToken: session.accessToken,
+        IdRoom: idRoom
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -24,11 +24,8 @@ export default function Chat({ session, idRoom }) {
     })
     .then((response) => response.json())
     .then((json) => {
-      if (json.result == 0)
-        setMessageError('Error en datos ingresados.');
-      else setSession(json.data)
+      setMensajes(json.data);
     });
-  }*/
   }, []);
 
   return (
@@ -36,10 +33,8 @@ export default function Chat({ session, idRoom }) {
       <Row>
         <Col className='mt-3'>
           <b>Mensajes de usuarios de la sala: { idRoom }</b>
-
-          <div className='chat-container m-2'>
-              
-          </div>
+          
+          {mensajes && <ChatView mensajes={mensajes}/>}
 
           <div style={{ height:"5vh" }}>
               <input className='mx-2' placeholder="Escribe un mensaje..." type="text" style={{ width:'90%' }} />
