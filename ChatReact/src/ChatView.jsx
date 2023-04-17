@@ -1,11 +1,14 @@
 import '../src/Chat.css';
 
-export default function ChatView({ mensajes }) {
+//
+function ChatView({ mensajes }) {
   return (
     <div className='chat-container m-2'>
+
       {mensajes.map(item => (
         <div key={item.id}>
           <div className={item.typeMessage == 1 ? 'chat-message chat-messageRight' : 'chat-message'}>
+
             <b>{item.userName}</b>
 
             <div>{item.message}</div>
@@ -14,7 +17,10 @@ export default function ChatView({ mensajes }) {
 
             <div className='clearfix'></div>
           </div>
-        </div>
-      ))}
+        </div>))
+      }
+
     </div>);
 }
+
+export default ChatView;

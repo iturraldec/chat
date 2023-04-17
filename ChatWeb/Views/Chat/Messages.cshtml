@@ -49,7 +49,7 @@
                 document.getElementById("AudioWelcome").play();
             });
 
-            connection.on("ReceiveMessage", function (idUser, userName, message, fecha) {
+            connection.on("ReceiveMessage", function (idMessage, idUser, userName, message, fecha) {
                 var classRight = (idUser == @Model.oUserSession.id) ? "messageRight" : "";
                 var newMessage = '<div>'+
                     "<div class='message "+classRight+"'>" +

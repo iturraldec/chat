@@ -1,17 +1,50 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import '../src/Chat.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import ChatView from './ChatView';
+import * as signalR from '@microsoft/signalr';
 
+//
+let connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5133/chatHub/").build();
+
+//
 export default function Chat({ session, idRoom }) {
-  const [mensajes, setMensajes] = useState(null);
-
-  // cargo los mensajes
+  const [mensajes, setMensajes] = useState([]);
+  const [message, setMessage] = useState('');
+  
+  //
   useEffect(() => {
+    // inicio signalr
+    connection.start()
+      .then(() => {
+        console.log("Conexión exitosa.");
+
+        // me agrego al grupo
+        connection.invoke("AddGroup", idRoom.toString());
+      })
+      .catch((error) => {
+        console.error("Error en la conexión: ", error);
+      });
+
+
+    // recibo mensajes desde el servidor
+    connection.on("ReceiveMessage", function (idMessage, idUser, userName, message, fecha) {
+      var _message = {
+        id: idMessage,
+        idUser: idUser,
+        userName: userName,
+        message:message,
+        dateCreated:fecha,
+        typeMessage: (idUser == session.id) ? 1 : 2
+      }
+
+      console.log(_message);
+      setMensajes(prevMensajes => [...prevMensajes, _message]);
+    });
+
+    // cargo los mensajes
     fetch('http://localhost:5133/api/message', {
       method: 'POST',
       body: JSON.stringify({
@@ -28,6 +61,15 @@ export default function Chat({ session, idRoom }) {
     });
   }, []);
 
+  //
+  function sendMessage() {
+    connection.invoke("SendMessage", idRoom, session.id, session.name, message, session.accessToken)
+              .catch(function (err) {
+                return console.error(err.toString());
+              })                
+  }
+
+  //
   return (
     <Container>
       <Row>
@@ -37,8 +79,15 @@ export default function Chat({ session, idRoom }) {
           {mensajes && <ChatView mensajes={mensajes}/>}
 
           <div style={{ height:"5vh" }}>
-              <input className='mx-2' placeholder="Escribe un mensaje..." type="text" style={{ width:'90%' }} />
-              <input type="button" value="Enviar" className="btn btn-success" />
+              <input type="text"
+                value={message}
+                className='mx-2' 
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Escribe un mensaje..." 
+                style={{ width:'90%' }}
+              />
+
+              <input type="button" value="Enviar" className="btn btn-success" onClick={() => sendMessage()} />
           </div>
 
         </Col>

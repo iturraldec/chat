@@ -21,3 +21,7 @@
     text-align:right; 
     font-size:11px;
 }
+
+.chat-audio {
+    display:none;
+}
