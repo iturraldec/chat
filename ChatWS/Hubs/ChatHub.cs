@@ -35,9 +35,9 @@ public class ChatHub : Hub
 
           db.Messages.Add(oMessage);
           db.SaveChanges();
+          
+          await Clients.Group(idRoom.ToString()).SendAsync("ReceiveMessage", oMessage.Id, idUser, userName, message, fecha); 
         }
-
-        await Clients.Group(idRoom.ToString()).SendAsync("ReceiveMessage", idUser, userName, message, fecha); 
       }
     }
 
