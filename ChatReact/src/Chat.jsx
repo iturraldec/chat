@@ -16,11 +16,14 @@ export default function Chat({ session, idRoom }) {
   
   //
   useEffect(() => {
+    // sonido-saludo 
+    const audio = new Audio("/src/assets/EnterUser.mp3");
+
+    audio.play();
+
     // inicio signalr
     connection.start()
       .then(() => {
-        console.log("Conexión exitosa.");
-
         // me agrego al grupo
         connection.invoke("AddGroup", idRoom.toString());
       })
@@ -59,6 +62,12 @@ export default function Chat({ session, idRoom }) {
     .then((json) => {
       setMensajes(json.data);
     });
+
+    // limpio...
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
   }, []);
 
   //
@@ -70,7 +79,7 @@ export default function Chat({ session, idRoom }) {
   }
 
   //
-  return (
+  return (<>
     <Container>
       <Row>
         <Col className='mt-3'>
@@ -93,5 +102,6 @@ export default function Chat({ session, idRoom }) {
         </Col>
       </Row>
     </Container>
+    </>
   )
 }
