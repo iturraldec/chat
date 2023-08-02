@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Aplicación que simula un chat web basada en el framework de Microsoft Asp.Net Core 7.0 (MVC), EntityFrameworkCore y React.
+Aplicación que simula un chat web basada en el framework de Microsoft Asp.Net Core 7.0 (MVC), EntityFrameworkCore, SignalR, y React como cliente adicional.
 
 ### La solución consta de 4 proyectos:
 1. Utilidades del chat (/UtilitiesChat/)
